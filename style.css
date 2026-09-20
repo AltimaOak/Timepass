@@ -1,0 +1,573 @@
+/* ==========================================================================
+   FOR NANDINI — PERSONAL PROPOSAL DESIGN SYSTEM
+   Style: Warm cream, delicate blush rose, charcoal text, elegant serif & handwriting.
+   ========================================================================== */
+
+:root {
+  --bg-primary: #FAF7F2;
+  --bg-card: #FFFFFF;
+  --bg-warm-tint: #FFF9F5;
+  --text-primary: #2D2825;
+  --text-secondary: #5C524C;
+  --text-muted: #8E827A;
+  --accent-rose: #D48B7E;
+  --accent-rose-hover: #C3796C;
+  --accent-blush: #F9ECE8;
+  --accent-blush-border: #EED8D2;
+  --border-subtle: #EFE7DE;
+  --shadow-soft: 0 12px 36px -8px rgba(60, 40, 35, 0.05);
+  --shadow-button: 0 4px 16px -2px rgba(212, 139, 126, 0.25);
+  
+  --font-serif: 'Cormorant Garamond', Garamond, 'Playfair Display', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-hand: 'Caveat', 'Reenie Beanie', cursive;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+  height: 100%;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  line-height: 1.65;
+  overflow-x: hidden;
+  min-height: 100vh;
+  min-height: 100dvh;
+  transition: background-color 1.2s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+body.celebrate-mode {
+  background-color: #FAF2EB;
+}
+
+/* Subtle background grain / organic feel */
+.bg-ambient {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(circle at 50% 20%, rgba(249, 236, 232, 0.6) 0%, transparent 70%);
+  opacity: 0.8;
+  transition: opacity 1.5s ease;
+}
+
+body.celebrate-mode .bg-ambient {
+  background: radial-gradient(circle at 50% 30%, rgba(247, 218, 209, 0.7) 0%, rgba(250, 242, 235, 0.3) 80%);
+}
+
+/* Canvas for soft floating celebration particles */
+#particle-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 50;
+}
+
+/* Audio toggle pill */
+.audio-control {
+  position: fixed;
+  top: max(1rem, env(safe-area-inset-top) + 0.5rem);
+  right: max(1rem, env(safe-area-inset-right) + 0.5rem);
+  z-index: 100;
+  opacity: 0;
+  transform: translateY(-8px);
+  animation: fadeIn 1s ease forwards 1s;
+}
+
+.audio-btn {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.45rem 0.85rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  touch-action: manipulation;
+}
+
+.audio-btn.playing {
+  border-color: var(--accent-rose);
+  color: var(--accent-rose);
+  background: #FFFDFB;
+}
+
+.audio-btn:hover {
+  background: #ffffff;
+  color: var(--text-primary);
+  border-color: var(--accent-blush-border);
+}
+
+/* ==========================================================================
+   PRELOADER
+   ========================================================================== */
+#preloader {
+  position: fixed;
+  inset: 0;
+  background-color: var(--bg-primary);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  text-align: center;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+#preloader.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.preloader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  max-width: 320px;
+}
+
+.heart-svg-wrapper {
+  width: 68px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heart-path-animated {
+  fill: none;
+  stroke: var(--accent-rose);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 220;
+  stroke-dashoffset: 220;
+  animation: drawHeart 1.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.preloader-heart.pulse {
+  animation: singleHeartbeat 0.9s ease-in-out 1.5s forwards;
+}
+
+.preloader-text-1 {
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  color: var(--text-secondary);
+  font-weight: 400;
+  opacity: 0;
+  transform: translateY(6px);
+  animation: fadeInUp 0.8s ease 0.6s forwards;
+}
+
+.preloader-text-2 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 4vw, 1.75rem);
+  font-weight: 500;
+  color: var(--text-primary);
+  font-style: italic;
+  opacity: 0;
+  transform: translateY(6px);
+  animation: fadeInUp 0.8s ease 1.3s forwards;
+}
+
+/* ==========================================================================
+   MAIN CONTAINER & SECTIONS
+   ========================================================================== */
+.site-wrapper {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 580px;
+  margin: 0 auto;
+  padding: 4rem 1.25rem 3.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (max-width: 480px) {
+  .site-wrapper {
+    padding: 3.5rem 1rem 2.5rem;
+  }
+}
+
+.proposal-section {
+  width: 100%;
+  min-height: 72vh;
+  min-height: 72dvh;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.proposal-section.active {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Typography styles */
+.greeting-label {
+  font-family: var(--font-sans);
+  font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--accent-rose);
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+.serif-heading {
+  font-family: var(--font-serif);
+  font-size: clamp(1.85rem, 6vw, 2.65rem);
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.01em;
+}
+
+.body-text {
+  font-size: clamp(0.95rem, 3vw, 1.05rem);
+  color: var(--text-secondary);
+  line-height: 1.75;
+  max-width: 440px;
+  margin: 0 auto 2.25rem;
+  white-space: pre-line;
+  font-weight: 400;
+}
+
+/* Hand-drawn doodle elements */
+.doodle-heart {
+  display: inline-block;
+  margin: 0.75rem auto 1.75rem;
+  color: var(--accent-rose);
+  opacity: 0.85;
+}
+
+.doodle-heart svg {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+}
+
+/* Primary Button */
+.btn-romantic {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--accent-blush-border);
+  font-family: var(--font-sans);
+  font-size: clamp(0.95rem, 2.8vw, 1rem);
+  font-weight: 500;
+  min-height: 48px;
+  padding: 0.85rem 1.6rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  touch-action: manipulation;
+  max-width: 100%;
+}
+
+.btn-romantic:hover {
+  background: var(--accent-blush);
+  border-color: var(--accent-rose);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -4px rgba(212, 139, 126, 0.2);
+}
+
+.btn-romantic:active {
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   SECTION 2 — THE PERSONAL LETTER
+   ========================================================================== */
+.letter-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  padding: clamp(1.75rem, 5vw, 2.5rem) clamp(1.25rem, 4vw, 2rem);
+  box-shadow: var(--shadow-soft);
+  width: 100%;
+  max-width: 520px;
+  text-align: left;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.letter-heading {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 5vw, 1.85rem);
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+  font-style: italic;
+}
+
+.letter-content p {
+  color: var(--text-secondary);
+  font-size: clamp(0.95rem, 2.8vw, 1.02rem);
+  line-height: 1.85;
+  margin-bottom: 1.25rem;
+  white-space: pre-line;
+}
+
+.letter-content p:last-of-type {
+  margin-bottom: 1.5rem;
+}
+
+.letter-signature {
+  font-family: var(--font-hand);
+  font-size: clamp(1.35rem, 4.5vw, 1.6rem);
+  color: var(--accent-rose);
+  text-align: right;
+  margin-top: 1.25rem;
+  display: block;
+}
+
+/* ==========================================================================
+   SECTION 3 — THE QUESTION
+   ========================================================================== */
+.question-container {
+  width: 100%;
+  max-width: 520px;
+  padding: 1.5rem 0.5rem;
+}
+
+.question-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 7vw, 3rem);
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  white-space: pre-line;
+}
+
+.question-subtitle {
+  font-size: clamp(0.95rem, 2.8vw, 1.05rem);
+  color: var(--text-secondary);
+  margin-bottom: 2.5rem;
+  font-weight: 400;
+}
+
+/* The single "Yes, I will ♡" button */
+.btn-yes {
+  background-color: var(--accent-rose);
+  color: #FFFFFF;
+  border: 1px solid var(--accent-rose);
+  font-family: var(--font-sans);
+  font-size: clamp(1.05rem, 3.2vw, 1.15rem);
+  font-weight: 500;
+  min-height: 52px;
+  padding: 0.95rem 2.5rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px -4px rgba(212, 139, 126, 0.4);
+  transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  touch-action: manipulation;
+}
+
+.btn-yes:hover {
+  background-color: var(--accent-rose-hover);
+  border-color: var(--accent-rose-hover);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 28px -4px rgba(212, 139, 126, 0.5);
+}
+
+.btn-yes:active {
+  transform: translateY(0) scale(0.99);
+}
+
+/* Post-acceptance celebration container */
+.celebration-box {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  animation: fadeIn 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.celebration-text-1 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 5vw, 1.75rem);
+  font-weight: 500;
+  color: var(--text-primary);
+  font-style: italic;
+  line-height: 1.35;
+}
+
+.celebration-text-2 {
+  font-size: clamp(0.95rem, 2.8vw, 1.05rem);
+  color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+}
+
+/* ==========================================================================
+   SECTION 4 — FINAL MESSAGE & WHATSAPP
+   ========================================================================== */
+.final-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  padding: clamp(2rem, 5vw, 2.75rem) clamp(1.25rem, 4vw, 2rem);
+  box-shadow: var(--shadow-soft);
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  position: relative;
+}
+
+.final-heading {
+  font-family: var(--font-serif);
+  font-size: clamp(1.75rem, 6vw, 2.25rem);
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.final-text {
+  font-size: clamp(0.95rem, 2.8vw, 1.05rem);
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 1.75rem;
+  white-space: pre-line;
+}
+
+.whatsapp-box {
+  border-top: 1px dashed var(--border-subtle);
+  padding-top: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.whatsapp-note {
+  font-size: clamp(0.88rem, 2.5vw, 0.95rem);
+  color: var(--text-muted);
+  margin-bottom: 1.15rem;
+  font-weight: 400;
+}
+
+.btn-whatsapp {
+  background: #25D366;
+  background: linear-gradient(135deg, #2ED86D 0%, #20BA5A 100%);
+  color: #FFFFFF;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: clamp(0.95rem, 2.8vw, 1.05rem);
+  font-weight: 600;
+  min-height: 50px;
+  padding: 0.9rem 2rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px -2px rgba(37, 211, 102, 0.35);
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  touch-action: manipulation;
+}
+
+.btn-whatsapp:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -2px rgba(37, 211, 102, 0.45);
+  filter: brightness(1.03);
+}
+
+.btn-whatsapp:active {
+  transform: translateY(0);
+}
+
+.btn-whatsapp svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+/* ==========================================================================
+   ANIMATIONS & KEYFRAMES
+   ========================================================================== */
+@keyframes drawHeart {
+  0% {
+    stroke-dashoffset: 220;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes singleHeartbeat {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.18); }
+  70% { transform: scale(0.96); }
+  100% { transform: scale(1); }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

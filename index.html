@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>For Nandini ♡</title>
+  <meta name="description" content="A small handwritten surprise, just for you.">
+
+  <!-- Favicon Heart -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23D48B7E'><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/></svg>">
+
+  <!-- Google Fonts: Cormorant Garamond, Plus Jakarta Sans, Caveat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Ambient soft background -->
+  <div class="bg-ambient" aria-hidden="true"></div>
+
+  <!-- Soft floating celebration canvas -->
+  <canvas id="particle-canvas" aria-hidden="true"></canvas>
+
+  <!-- Audio control toggle pill -->
+  <div class="audio-control" id="audio-control-container">
+    <button class="audio-btn" id="audio-toggle-btn" aria-label="Toggle background music">
+      <span id="audio-icon">♫</span>
+      <span id="audio-label">Play music</span>
+    </button>
+    <audio id="bg-audio" preload="auto" autoplay loop playsinline></audio>
+  </div>
+
+  <!-- =========================================================================
+       PRELOADER SEQUENCE (~2.5s)
+       ========================================================================= -->
+  <div id="preloader" aria-live="polite">
+    <div class="preloader-content">
+      <div class="heart-svg-wrapper preloader-heart" id="preloader-heart-box">
+        <svg viewBox="0 0 64 64" width="60" height="60" aria-hidden="true">
+          <!-- Gentle hand-drawn heart path -->
+          <path class="heart-path-animated" d="M32 54 C30 52 10 38 10 24 C10 15 16 10 24 10 C28.5 10 31.5 12.5 32 15 C32.5 12.5 35.5 10 40 10 C48 10 54 15 54 24 C54 38 34 52 32 54 Z" />
+        </svg>
+      </div>
+      <p class="preloader-text-1" id="preload-text-1">Just something I made for you…</p>
+      <h2 class="preloader-text-2" id="preload-text-2">Nandini ♡</h2>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MAIN PROPOSAL CONTAINER
+       ========================================================================= -->
+  <main class="site-wrapper" id="main-content">
+
+    <!-- SECTION 1: HERO -->
+    <section class="proposal-section active" id="section-hero">
+      <span class="greeting-label" id="hero-greeting">Hey Nandini…</span>
+      <h1 class="serif-heading" id="hero-title">I have something to ask you.</h1>
+      
+      <div class="doodle-heart" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+        </svg>
+      </div>
+
+      <p class="body-text" id="hero-subtitle">
+        I could have said this normally…<br>
+        but I thought making something just for you would be a little more special.
+      </p>
+
+      <button class="btn-romantic" id="btn-hero-next" type="button">
+        <span id="hero-btn-text">There's something I want to tell you →</span>
+      </button>
+    </section>
+
+    <!-- SECTION 2: THE PERSONAL LETTER -->
+    <section class="proposal-section" id="section-letter">
+      <div class="letter-card">
+        <h2 class="letter-heading" id="letter-heading">For you, Nandini.</h2>
+        <div class="letter-content" id="letter-body">
+          <p>I don't really know the perfect way to say this.<br>So I'll just say it honestly.</p>
+          <p>Somewhere along the way, you became someone I look forward to talking to,<br>someone who makes ordinary moments feel a little better.</p>
+          <p>And I've been wanting to tell you something for a while…</p>
+        </div>
+        <span class="letter-signature" id="letter-signature">— Someone who really likes you ♡</span>
+      </div>
+
+      <button class="btn-romantic" id="btn-letter-next" type="button">
+        <span id="letter-btn-text">Continue reading →</span>
+      </button>
+    </section>
+
+    <!-- SECTION 3: THE QUESTION -->
+    <section class="proposal-section" id="section-question">
+      <div class="question-container">
+        
+        <!-- Normal Question State -->
+        <div id="question-prompt-block">
+          <h2 class="question-title" id="question-title">Nandini,<br>will you be mine? ♡</h2>
+          <p class="question-subtitle" id="question-subtitle">I'd really like to make more memories with you.</p>
+          
+          <button class="btn-yes" id="btn-say-yes" type="button">
+            <span id="question-yes-text">Yes, I will ♡</span>
+          </button>
+        </div>
+
+        <!-- Post-Acceptance Celebration Box -->
+        <div class="celebration-box" id="celebration-block" aria-live="polite">
+          <h3 class="celebration-text-1" id="celebration-text-1">Okay… you just made me really happy. ❤️</h3>
+          <p class="celebration-text-2" id="celebration-text-2">I'm glad I finally asked.</p>
+          
+          <button class="btn-romantic" id="btn-celebration-next" type="button">
+            <span id="celebration-btn-text">One last thing →</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 4: FINAL MESSAGE & WHATSAPP TRIGGER -->
+    <section class="proposal-section" id="section-final">
+      <div class="final-card">
+        <h2 class="final-heading" id="final-heading">Thank you, Nandini. ♡</h2>
+        
+        <p class="final-text" id="final-message">
+          No matter what happens next,<br>
+          I'm really glad I got to tell you how I feel.
+        </p>
+
+        <div class="whatsapp-box">
+          <p class="whatsapp-note" id="final-note">There's one message waiting for you… 💌</p>
+          
+          <a class="btn-whatsapp" id="btn-whatsapp-action" href="#" target="_blank" rel="noopener noreferrer">
+            <!-- WhatsApp SVG Icon -->
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.42 0-2.82-.37-4.06-1.07l-.29-.17-3.02.79.81-2.94-.19-.3a8.216 8.216 0 0 1-1.26-4.36c0-4.54 3.7-8.24 8.24-8.24zm4.51 11.64c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.26-1.49-1.41-1.74-.14-.25-.02-.39.11-.51.11-.11.25-.29.37-.44.13-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.78 2.72 4.31 3.81.6.26 1.07.42 1.44.53.61.2 1.16.17 1.6.1 1.49-.07 1.47-.61 1.68-1.2.21-.59.21-1.09.15-1.2-.06-.1-.23-.17-.48-.29z"/>
+            </svg>
+            <span id="final-action-text">Send it to me ♡</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Load Config and Core Application Logic -->
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
